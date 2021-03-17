@@ -1,0 +1,93 @@
+{% extends "base_template.html" %}
+
+
+<!-- al usar blocks he dich que solo definiremos el titulo usando el block title-->
+{% block title %}Index{% endblock %}
+
+<!--Aqui empieza el body-->
+{% block body %}
+<div>
+    <main class="about-contact">
+        <section class="header01 cid-rYWHPgVUdh mbr-fullscreen mbr-parallax-background" id="header01-1m">
+
+
+            <div class="mbr-overlay" style="opacity: 0.3; background-color: rgb(11, 29, 50);"></div>
+
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="mbr-white col-md-12">
+                        <div class="wrap">
+                            <h2 class="mbr-section-subtitle mbr-white mbr-bold font-italic mbr-fonts-style display-2 align-items-center">
+                                JAN VALLVE ADD TYPES </h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
+
+        <div class="row">
+            <div class="container">
+                <div class="card">
+                    <div class="card-header">
+                        <form action="/add_types/" method="POST">
+                            <h3 class="blacky">Añadir un type --NO BORRAR TYPES CREADOS POR DEFECTO--</h3>
+
+
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="inputCity">type_class (PK)</label>
+                                    <input type="text" name="type_class" class="form-control" placeholder="Complete Name" autofocus>
+                                </div>
+
+                                <div class="form-group col-md-6">
+                                    <label for="inputCity">Full_Name</label>
+                                    <input type="text" name="full_name" class="form-control" placeholder="Name a la vista">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="inputCity">Video, Example:https://www.youtube.com/embed/_DYAnU3H7RI</label>
+                                    <input type="text" name="video" class="form-control" placeholder="https://www.youtube.com/embed/NDfF_XwNtIw">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="inputZip">Wars</label>
+                                    <input type="text" name="wars" placeholder="Wars" class="form-control">
+                                </div>
+
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-block">Save</button>
+                        </form>
+                    </div>
+                    <div class="list_ships">
+                        {% for type in types %}
+
+                        <p class="blacky"> - PK Name:{{type.type_class}}, Nombre que vemos:{{type.full_name}},Origen:{{type.origin}} Video:{{type.video}} Wars: {{type.wars}}
+                            <a href="{{url_for('delete_type', type_class=type.type_class)}}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</a>
+
+
+                        </p>
+
+
+                        {% endfor %}
+                    </div>
+
+
+
+
+
+                </div>
+            </div>
+        </div>
+
+
+
+    </main>
+</div>
+
+{% endblock %}
+<!--El body se cierra en el tamplate al gual que el html-->

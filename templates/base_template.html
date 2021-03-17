@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+
+    <!--Bootstrap YETI-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/yeti/bootstrap.min.css" integrity="sha384-mLBxp+1RMvmQmXOjBzRjqqr0dP9VHU2tb3FK6VB0fJN/AOu7/y+CAeYeWJZ4b3ii" crossorigin="anonymous">
+
+    <!--CSS-->
+    <link rel="stylesheet" href="{{url_for('static', filename='main.css')}}">
+
+    <!-- Favicon -->
+    <link href="https://favicon-generator.org/favicon-generator/htdocs/favicons/2015-01-08/d892392af0b9610eb1260840c73a0116.ico" rel="icon">
+
+    <!-- Google fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@340&display=swap" rel="stylesheet">
+
+
+
+    <!--Ordenar tablas-->
+    {% block headd %} {% endblock %}
+
+
+
+</head>
+
+<body>
+
+    <!-- Header-->
+
+    <header id="header" class="fixed-top header-inner-pages">
+        <div class="container-fluid">
+            <div class="row justify-content-center">
+                <div class="col-xl-9 d-flex align-items-center justify-content-between">
+                    <h1 class="logo"><a href="/tiers/">Warships</a></h1>
+
+
+                    <nav class="nav-menu d-none d-lg-block">
+                        <ul>
+                            <li><a href="/tiers">Ships</a></li>
+                            <li><a href="/types">Types</a></li>
+                            <li><a href="/add_types/">Add/Delete Types</a></li>
+
+                        </ul>
+                    </nav>
+
+                    <a href="/" class="get-started-btn">Add/Edit/Delete Ship</a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- End Header-->
+
+    {% block body %}{% endblock %}
+</body>
+
+</html>

@@ -1,0 +1,52 @@
+{% extends "base_template.html" %}
+<!---->
+{% block title %}Edit_types{% endblock %}
+
+<!--Aqui empieza el body-->
+
+{% block body %} {{types}} {% for type in types %}
+<div class="card-header about-contact">
+    <form action="/edit_types/{{type.type_class}}" method="POST">
+        <h3 class="blacky">Modificar el type {{type.type_class}}</h3>
+
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <input type="hidden" value="{{type.full_name}}" name="oldfull_name">
+                <label for="inputCity" class="whitey">Full_name de la PK {{type.type_class}}</label>
+                <input type="text" name="newfull_name" class="form-control" placeholder="Complete Name" value="{{type.full_name}}" autofocus>
+            </div>
+            <div class="form-group col-md-6">
+                <input type="hidden" value="{{type.wars}}" name="oldwars">
+                <label for="inputCity" class="whitey">Wars</label>
+                <input type="text" name="newwars" class="form-control" placeholder="Complete Name" value="{{type.wars}}">
+            </div>
+            <div class="form-group col-md-12">
+                <input type="hidden" value="{{type.origin}}" name="oldorigin">
+                <label for="inputCity" class="whitey">Origin</label>
+                <!--<textarea type="text" name="neworigin" class="form-control" placeholder="Complete Name" value="{{type.origin}}" autofocus>
+                </textarea>-->
+                <input type="text" name="neworigin" class="form-control" placeholder="Complete Name" value="{{type.origin}}">
+            </div>
+            <div class="form-group col-md-6">
+                <input type="hidden" value="{{type.video}}" name="oldvideo">
+                <label for="inputCity" class="whitey">Video (tienes que ponerlo con la opcion que te da youtube con "insertar" (embed))</label>
+                <label for="inputCity" class="whitey">Ejemplo: https://www.youtube.com/embed/NDfF_XwNtIw</label>
+
+                <input type="text" name="newvideo" class="form-control" placeholder="Complete Name" value="{{type.video}}">
+            </div>
+            <div class="form-group col-md-6">
+                <input type="hidden" value="{{type.photo}}" name="oldphoto">
+                <label for="inputCity" class="whitey">Foto (no se muestra)</label>
+                <input type="text" name="newphoto" class="form-control" placeholder="Complete Name" value="{{type.photo}}">
+            </div>
+
+
+        </div>
+
+
+
+        <button type="submit" class="btn btn-primary btn-block">Update</button>
+    </form>
+</div>
+{% endfor %}{% endblock %}

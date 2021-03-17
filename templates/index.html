@@ -1,0 +1,110 @@
+{% extends "base_template.html" %}
+
+
+<!-- al usar blocks he dich que solo definiremos el titulo usando el block title-->
+{% block title %}Index{% endblock %}
+
+<!--Aqui empieza el body-->
+{% block body %}
+<div>
+    <main class="about-contact">
+        <section class="header01 cid-rYWHPgVUdh mbr-fullscreen mbr-parallax-background" id="header01-1m">
+
+
+            <div class="mbr-overlay" style="opacity: 0.3; background-color: rgb(11, 29, 50);"></div>
+
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="mbr-white col-md-12">
+                        <div class="wrap">
+                            <h2 class="mbr-section-subtitle mbr-white mbr-bold font-italic mbr-fonts-style display-2 align-items-center">
+                                JAN VALLVE ADD SHIPS</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
+
+        <div class="row">
+            <div class="container">
+                <div class="card">
+                    <div class="card-header">
+                        <form action="/add_ship/" method="POST">
+                            <h3 class="blacky">Añadir un barco de guerra</h3>
+
+
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="inputCity">Name</label>
+                                    <input type="text" name="nombre" class="form-control" placeholder="Complete Name" autofocus>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="inputState">Type </label>
+                                    <select id="inputState" class="form-control" name="type_class">
+                                    <option value="Destroyer">Destroyer</option>
+                                    <option value="Cruiser">Cruiser</option>
+                                    <option value="Battleship">Battleship</option>
+                                    <option value="Carrier">Carrier</option>
+                              </select>
+
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label for="inputZip">Tier(1-8)</label>
+                                    <input type="number" name="tier_number" placeholder="Tier" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label for="inputCity">Origin</label>
+                                    <input type="text" name="origin" class="form-control" placeholder="Country">
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="inputZip">Max Velocity</label>
+                                    <input type="number" name="max_velocity" placeholder="Max Velocity" class="form-control">
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="inputZip">Active?</label>
+                                    <select id="inputState" class="form-control">
+                                    <option value="">Retired</option>
+                                    <option value="">Active</option>
+                              </select>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-block">Save</button>
+                        </form>
+                    </div>
+                    <div class="list_ships">
+                        {% for ship in ships %}
+
+                        <p class="blacky"> - {{ship.id}}, {{ship.nombre}},{{ship.origin}} Tier:{{ship.tier_number}} Type:{{ship.type_class}}, Active:{{ship.active}} Max Velocity:{{ship.max_velocity}}
+                            <a href="{{url_for('delete_ship', id=ship.id)}}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</a>
+
+                            <a href="{{url_for('edit_ship', id=ship.id)}}" class="btn btn-warning btn-sm ">EDIT</a>
+
+
+                        </p>
+                        <!--<button type="button " class="btn btn-info btn-sm ">Delete</button> -->
+
+                        {% endfor %}
+                    </div>
+
+
+
+
+
+                </div>
+            </div>
+        </div>
+
+
+
+    </main>
+</div>
+
+{% endblock %}
+<!--El body se cierra en el tamplate al gual que el html-->

@@ -1,0 +1,146 @@
+{% extends "base_template.html" %}
+
+
+<!-- al usar blocks he dich que solo definiremos el titulo usando el block title-->
+{% block title %}Tiers{% endblock %}
+
+
+<!-- Para odernar-->
+{% block headd %}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#jan').DataTable();
+    });
+</script>
+{% endblock %}
+
+
+<!--Aqui empieza el body-->
+{% block body %}
+
+
+
+
+<!-- Explicacion basica tiers-->
+<section id="info_tiers" class="about-tiers">
+    <div class="container_tiers text-justify">
+
+        <div class="col-lg-12">
+            <h1>Tiers Warships</h1>
+            <p class="whitey">
+                Hay un total de 10 tiers, cada uno mejor que el anterior siendo el 1 el mas bajo y el 10 el mas alto.
+            </p>
+            <p class="whitey">
+                The matchmaker initially tries to assemble exactly mirrored team lineups in terms of ship tiers and types. If the matchmaker isn't able to assemble a battle in this way, it then proceeds to match ships of lower tiers while ignoring the ship-type parameter.
+                For example, in a Tier VIII battle, it's possible for a Tier VI battleship to be matched to a Tier VI cruiser, or even a Tier VI destroyer. This rule doesn't apply to aircraft carriers.
+
+            </p>
+
+        </div>
+
+    </div>
+</section>
+
+<!-- tabla ----------------------------------------------------------->
+
+<!--tabla tiers--->
+
+{% if ships %} {% for tier in tiers %}
+
+<div class="col-lg-12">
+    <h3><a href="" class="text-decoration-none types-links">Tier {{ tier.tier_number }}</a></h3>
+    <table class="table table-hover table-dark">
+        <thead>
+            <tr class="table-tier1">
+                <th scope="col">Name</th>
+                <th scope="col">Origin</th>
+                <th scope="col">Type class</th>
+                <th scope="col">Tier number</th>
+                <th scope="col">Active</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ship in ships %} {% if ship.tier_number == tier.tier_number %}
+            <tr>
+                <th scope="row">{{ship.nombre}}</th>
+                <td>{{ship.origin}}</td>
+                <td>{{ship.type_class}}</td>
+                <td class="{% if ship.tier_number <= 4 %} listlow{% elif ship.tier_number <= 6 %}listmid {% else %} listhigh {% endif %}">{{ship.tier_number}}</td>
+                <td>{{ship.active}}</td>
+            </tr>
+            {% endif %} {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endfor %} {% endif %}
+
+
+<!------------------------------------------------------------>
+<!--tabla ALL tiers--->
+
+
+
+<div class="col-lg-12">
+    <h3><a href="" class="text-decoration-none types-links">All Tiers</a></h3>
+    <table id="jan" class="table table-hover table blacky">
+        <thead>
+            <tr class="table-tier1">
+                <th scope="col">Name</th>
+                <th scope="col">Origin</th>
+                <th scope="col">Type class</th>
+                <th scope="col">Tier number</th>
+                <th scope="col">Active</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for ship in ships %}
+            <tr>
+                <th scope="row">{{ship.nombre}}</th>
+                <td>{{ship.origin}}</td>
+                <td>{{ship.type_class}}</td>
+                <td class="{% if ship.tier_number <= 4 %} listlow{% elif ship.tier_number <= 6 %}listmid {% else %} listhigh {% endif %}">{{ship.tier_number}}</td>
+                {% if ship.active%}
+                <td class="{% if ship.active %} bg-success {% endif %}"><a href="{{url_for('active_ship', id=ship.id)}}">Activo</a></td>
+                {% else %}
+                <td><a href="{{url_for('active_ship', id=ship.id)}}">No Activo</a></td>
+                {% endif %}
+
+                <!--
+                        <td class="{% if ship.active %} bg-success {% else %} bg-info {% endif %}"><a href="{{url_for('active_ship', id=ship.id)}}">{% if ship.active %} Activo {% else %} No Activo{% endif %}</a></td>
+                    -->
+            </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+
+
+
+<footer id="footer" class="small_margin">
+    <div class="container">
+        <h3>Jan Vallve</h3>
+        <p>Estos han sido todos los barcos, espero que os gusten</p>
+        <div class="copyright">
+            ASIX
+            <strong><span>ASIX</span></strong> . All Rights Reserved
+
+        </div>
+        <div class="credits">
+            Muchas gracias
+            <span></span>
+        </div>
+    </div>
+</footer>
+
+{% endblock %}
+<!--El body se cierra en el tamplate al gual que el html-->

@@ -1,0 +1,54 @@
+{% extends "base_template.html" %}
+<!---->
+{% block title %}Edit_ships{% endblock %}
+
+<!--Aqui empieza el body-->
+
+{% block body %} {{ships}} {% for ship in ships %}
+<div class="card-header about-contact">
+    <form action="/edit_ship/{{ship.id}}" method="POST">
+        <h3 class="blacky">Modificar el barco de guerra</h3>
+
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <input type="hidden" value="{{ship.nombre}}" name="oldname">
+                <label for="inputCity" class="whitey">Name</label>
+                <input type="text" name="newname" class="form-control" placeholder="Complete Name" value="{{ship.nombre}}" autofocus>
+            </div>
+            <div class="form-group col-md-4">
+                <input type="hidden" value="{{ship.type_class}}" name="oldtype_class">
+                <label for="inputState" class="whitey">Type</label>
+                <select id="inputState" class="form-control" name="newtype_class">
+                    <option value="Destroyer" {% if ship.type_class == 'Destroyer' %} selected {% endif %}>Destroyer</option>
+                    <option value="Cruiser"{% if ship.type_class == 'Cruiser' %} selected {% endif %}>Cruiser</option>
+                    <option value="Battleship" {% if ship.type_class == 'Battleship' %} selected {% endif %}>Battleship</option>
+                    <option value="Carrier" {% if ship.type_class == 'Carrier' %} selected {% endif %}>Carrier</option>
+              </select>
+
+            </div>
+            <div class="form-group col-md-2">
+                <input type="hidden" name="oldtier_number" class="form-control" value="{{ship.tier_number}}">
+                <label for="inputZip" class="whitey">Tier(1-8)</label>
+                <input type="number" name="newtier_number" placeholder="Tier" class="form-control" value="{{ship.tier_number}}">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <input type="hidden" value="{{ship.origin}}" name="oldorigin">
+                <label for="inputCity" class="whitey">Origin</label>
+                <input type="text" name="neworigin" class="form-control" placeholder="Country" value="{{ship.origin}}">
+            </div>
+            <div class="form-group col-md-6">
+                <input type="hidden" name="oldmax_velocity" class="form-control" value="{{ship.max_velocity}}">
+                <label for="inputZip" class="whitey">Max Velocity</label>
+                <input type="number" name="newmax_velocity" placeholder="Max Velocity" class="form-control" value="{{ship.max_velocity}}">
+            </div>
+
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block">Update</button>
+    </form>
+</div>
+{% endfor %}{% endblock %}

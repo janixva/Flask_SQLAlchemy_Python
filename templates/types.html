@@ -1,0 +1,71 @@
+{% extends "base_template.html" %}
+
+
+<!-- al usar blocks he dich que solo definiremos el titulo usando el block title-->
+{% block title %}Types{% endblock %}
+
+
+
+
+<!--Aqui empieza el body-->
+{% block body %}
+
+<div class="col-lg-12">
+
+    <section id="info_tiers" class="about-tiers">
+        <div class="container_tiers text-justify">
+
+            <div class="col-lg-12">
+                <h1>WARSHIP TYPES</h1>
+                <p class="whitey">
+
+                    The World of Warships fleet features over 200 ships, dating back to World War I and World War II. Put on your commander's cap, find out which warship type suits you, and amass a navy of your own.
+
+                </p>
+
+            </div>
+
+        </div>
+    </section>
+
+
+
+    <div class="row col-lg-6 margin ">
+
+    </div>
+
+    <div class="row ">
+        {% for type in types %}
+        <div class="col-lg-6 ">
+            <table id="jan" class="table table-hover table-dark ">
+                <thead>
+                    <tr class="table-tier8 ">
+                        <th scope="col ">
+                            <h1><a href="extra_html/types/type01.html " class="text-decoration-none types-links ">{{ type.full_name}}</a></h1>
+                        </th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>
+                            <p class="text-justify font-weight-normal ">
+                                {{type.origin}}
+                            </p>
+
+
+                            <div>
+                                <iframe width="560 " height="315 " src="{{type.video}} " frameborder="0 " allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture " allowfullscreen></iframe>
+
+                            </div>
+                            <div class=" ">
+                                <a href="{{url_for( 'edit_type', type_class=type.type_class)}} " class="btn btn-outline-warning ">EDIT</a>
+                            </div>
+                        </th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}
