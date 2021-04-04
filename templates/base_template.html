@@ -42,19 +42,39 @@
 
                     <nav class="nav-menu d-none d-lg-block">
                         <ul>
-                            <li><a href="/tiers">Ships</a></li>
-                            <li><a href="/types">Types</a></li>
-                            <li><a href="/add_types/">Add/Delete Types</a></li>
+                            <li class="drop-down"><a href="/tiers">Ships</a>
+                                <ul>
+                                    <li><a href="/tiers">Ships</a></li>
+                                    <li><a href="/">Add/Edit Ships</a></li>
+                                </ul>
+                            </li>
+                            <li class="drop-down"><a href="/types">Types</a>
+                                <ul>
+                                    <li><a href="/types">Types</a></li>
+                                    <li><a href="/add_types/">Add/Delete Types</a></li>
+                                </ul>
+                            </li>
+
+                            <li><a href="/account/">Account_Info</a></li>
+
+
+                            <li><a href="/register">Register</a></li>
+                            <li><a href="/logout/">Logout</a></li>
+
 
                         </ul>
                     </nav>
 
-                    <a href="/" class="get-started-btn">Add/Edit/Delete Ship</a>
+                    <a href="/login/" class="get-started-btn">Login</a>
+
+
                 </div>
             </div>
         </div>
     </header>
     <!-- End Header-->
+
+
 
     {% block body %}{% endblock %}
 </body>

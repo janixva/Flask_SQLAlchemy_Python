@@ -1,0 +1,71 @@
+{% extends "base_template.html" %}
+<!-- al usar blocks he dich que solo definiremos el titulo usando el block title-->
+{% block title %}Register{% endblock %}
+
+<!--Aqui empieza el body-->
+{% block body %}
+<div class="card-header about-contact">
+    <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        <fieldset class="form-group whitey">
+            <legend class="border-bottom mb-4">Register</legend>
+            <div class="form-group">
+                <!--Esto es la "label" de la form (del modulo Flask_WTF) que hemos importado desde app.py, en este caso el RegisterForm -->
+                <!--Los nombres de las form tienen q ser iguales a las variables que hemos definido-->
+                {{ form.username.label(class="form-control-label") }}
+                <!--Aqui ponemos el campo para escribir y que luego lo enviaremos como "username" al usar el boton que tmb hemos definido en el "Register form"-->
+                {{ form.username(class="form-control form-control-lg") }}
+            </div>
+            <!--Este div lo repetiremos por cada campo que queremos poner en nuestro formulario, simplemente tendremos que cambiar el obj de la form "Registerform"-->
+            <div class="form-group">
+                {{ form.email.label(class="form-control-label") }}
+                <!---->
+                <!--Para tal de mostrar un error si el email se ha introducido incorrectamente pondremos un condicional q mostrara un error, en el caso de que no tengamos errores se mostrara el mismo cuadro q los otros bloques de texto -->
+                <!--Usaremos el sietema de "flask wtf" para tal de mostrar los errores y que compruebe si hay problemas-->
+                {% if form.email.errors %} {{ form.email(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.email.errors %}
+                    <span>{{ error }}</span> {% endfor %}
+                </div>
+                {% else %} {{ form.email(class="form-control form-control-lg") }} {% endif %}
+
+            </div>
+            <div class="form-group">
+                {{ form.password.label(class="form-control-label") }}
+                <!---->
+                {{ form.password(class="form-control form-control-lg") }}
+            </div>
+            <div class="form-group">
+                {{ form.confirm_password.label(class="form-control-label") }}
+                <!---->
+                <!--Aqui usaremos el mismo sistema que con el mail, si flaskwtf detecta algun error mostrara el msg de error -->
+                {{ form.confirm_password(class="form-control form-control-lg") }}
+            </div>
+
+
+            <!-- Flash (no flask, flashh)-->
+            {% with messages = get_flashed_messages(with_categories=true) %} {% if messages %} {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">
+                {{ message }}
+            </div>
+            {% endfor %} {% endif %}
+            <!---->
+            {% endwith %}
+
+            <!--end msg flash-->
+        </fieldset>
+        <div class="form-group">
+            {{ form.submit(class="btn btn-outline-warning") }}
+        </div>
+
+    </form>
+
+
+</div>
+<div class="border-top pt-3 mb-4">
+    <small class="whitey">
+        -    ¿Ya tienes una cuenta? <a class="btn-outline-warning" href="{{ url_for('login') }}">Login here</a>
+    </small>
+</div>
+
+{% endblock %}

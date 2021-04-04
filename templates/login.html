@@ -1,0 +1,52 @@
+{% extends "base_template.html" %}
+<!-- al usar blocks he dich que solo definiremos el titulo usando el block title-->
+{% block title %}Login{% endblock %}
+
+<!--Aqui empieza el body-->
+{% block body %}
+<div class="card-header about-contact">
+    <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        <fieldset class="form-group whitey">
+            <legend class="border-bottom mb-4">Login</legend>
+            <div class="form-group">
+                <!--Esto es la "label" de la form (del modulo Flask_WTF) que hemos importado desde app.py, en este caso el LoginForm -->
+                <!--Los nombres de las form tienen q ser iguales a las variables que hemos definido-->
+                {{ form.username.label(class="form-control-label") }}
+                <!--Aqui ponemos el campo para escribir y que luego lo enviaremos como "username" al usar el boton que tmb hemos definido en el "Login form"-->
+                {{ form.username(class="form-control form-control-lg") }}
+            </div>
+            <!--Este div lo repetiremos por cada campo que queremos poner en nuestro formulario, simplemente tendremos que cambiar el obj de la form "Registerform"-->
+
+            <div class="form-group">
+                {{ form.password.label(class="form-control-label") }}
+                <!---->
+                {{ form.password(class="form-control form-control-lg") }}
+            </div>
+            <!-- Flash (no flask, flashh)-->
+            {% with messages = get_flashed_messages(with_categories=true) %} {% if messages %} {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">
+                {{ message }}
+            </div>
+            {% endfor %} {% endif %}
+            <!---->
+            {% endwith %}
+
+            <!--end msg flash-->
+
+        </fieldset>
+        <div class="form-group">
+            {{ form.submit(class="btn btn-outline-warning") }}
+        </div>
+
+    </form>
+
+
+</div>
+<div class="border-top pt-3 mb-4">
+    <small class="whitey">
+        -    ¿Crear una cuenta? <a class="btn-outline-warning" href="{{ url_for('register') }}">Registrate Aqui</a>
+    </small>
+</div>
+
+{% endblock %}

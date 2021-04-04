@@ -38,7 +38,7 @@
 
                             <div class="form-row">
                                 <div class="form-group col-md-6">
-                                    <label for="inputCity">type_class (PK)</label>
+                                    <label for="inputCity">""PONER LA PRIMERA LETRA EN MAYUS OBLIGATORIO""type_class (PK) </label>
                                     <input type="text" name="type_class" class="form-control" placeholder="Complete Name" autofocus>
                                 </div>
 
@@ -68,24 +68,12 @@
 
                         <p class="blacky"> - PK Name:{{type.type_class}}, Nombre que vemos:{{type.full_name}},Origen:{{type.origin}} Video:{{type.video}} Wars: {{type.wars}}
                             <a href="{{url_for('delete_type', type_class=type.type_class)}}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</a>
-
-
                         </p>
-
-
                         {% endfor %}
                     </div>
-
-
-
-
-
                 </div>
             </div>
         </div>
-
-
-
     </main>
 </div>
 
