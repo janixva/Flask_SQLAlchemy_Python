@@ -1,108 +1,10 @@
-from flask import Flask, render_template, request, url_for, redirect, flash #jsonify
-from flask_sqlalchemy import SQLAlchemy
-#from flask_marshmallow import Marshmallow
-from flask_bcrypt import Bcrypt
-#--flask wtf
-from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField
-from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
-
+from flask import Flask, render_template, request, url_for, redirect, flash
 from flask_login import UserMixin, login_user, current_user, logout_user, login_required, LoginManager
 
 
-
-#from flask_login import login_user, current_user, logout_user, login_required
-
-
-
-
-app = Flask(__name__)
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root@localhost/flask_warships'
-app.config['SECRET_KEY'] = '8456984at5b1ace7gfs578fhdjs129e8'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database/warship_jan.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-db = SQLAlchemy(app)
-
-#ma = Marshmallow(app)
-bcrypt =Bcrypt(app)
-login_manager = LoginManager(app)
-login_manager.login_view = 'login'
-login_manager.login_message_category = 'info'
-
-
-#clases ---------------------
-
-
-@login_manager.user_loader
-def load_user(id):
-    return User.query.get(int(id))
-
-class Ship(db.Model):        
-    id = db.Column(db.Integer, primary_key=True)
-    nombre = db.Column(db.String(200))
-    origin = db.Column(db.String(200))
-    type_class = db.Column(db.String(200))
-    tier_number = db.Column(db.Integer)
-    max_velocity = db.Column(db.Integer)
-    active = db.Column(db.Boolean)
-
-class Tier(db.Model):
-    
-    tier_number = db.Column(db.String(5),  primary_key=True)
-    cost_level = db.Column(db.String(200))
-
-class Type(db.Model):
-    type_class = db.Column(db.String(200), primary_key=True)
-    full_name = db.Column(db.String(200))
-    origin = db.Column(db.String(200))
-    photo = db.Column(db.String(200))
-    video = db.Column(db.String(200))
-    countrys_owners = db.Column(db.String(200))
-    wars = db.Column(db.String(200))
-
-
-class User(db.Model, UserMixin):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(20))
-    email = db.Column(db.String(60))
-    password = db.Column(db.String(50))
-
-    def __repr__(self):
-        return f"User('{self.username}', '{self.email}')"
-
-
-
-#-- Forms para login/register
-
-
-#-Estas clases con variables las llamaremos en las paguinas que queramos hacer un formulario
-
-class LoginForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired("Introduce un nombre de usuario valido")])
-    #email = StringField('Email', validators=[DataRequired("Introduce un mail valido"), Email()])
-    password = PasswordField('Password', validators=[DataRequired("Contraseña")])
-    submit = SubmitField('Login')
-    
-class RegistrationForm(FlaskForm):    
-    username = StringField('Username', validators=[DataRequired(), Length(min=2, max=20)])
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    confirm_password = PasswordField('Confirm Password',validators=[DataRequired(), EqualTo('password')])
-    submit = SubmitField('Sign_Up')
-
-    def validate_username(self, username):
-        user = User.query.filter_by(username=username.data).first()
-        if user:
-            flash('Error Register. El USERNAME ya esta siendo usado, selecciona otro', 'danger')#este msg sale en el html del cliente,, lo de danger es el tipo de error, en danger saldra de color rojo, info azul etc...
-            raise ValidationError('El USERNAME ya esta siendo usado, selecciona otro')#este msg sale en la terminal
-
-    def validate_email(self, email):
-        user = User.query.filter_by(email=email.data).first()
-        if user:
-            flash('Error Register. El EMAIL ya esta siendo usado, selecciona otro', 'danger')
-            raise ValidationError('El EMAIL ya esta siendo usado, selecciona otro.')
-
+from warships_blog import app, db, bcrypt
+from warships_blog.classes import Ship, Tier, Type, User
+from warships_blog.forms import RegistrationForm, LoginForm
 
 
 
@@ -286,6 +188,3 @@ def edit_ship(id):
         
         db.session.commit()
         return redirect(url_for('index'))
-
-if __name__ == '__main__':
-    app.run(port = 8082, debug = True)
