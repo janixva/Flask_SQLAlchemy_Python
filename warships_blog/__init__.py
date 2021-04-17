@@ -7,6 +7,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from flask_login import UserMixin, login_user, current_user, logout_user, login_required, LoginManager
+from flask_user import roles_required
 #from flask.ext.user import roles_required
 
 
@@ -23,6 +24,7 @@ bcrypt =Bcrypt(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 login_manager.login_message_category = 'info'
+
 
 
 

@@ -1,9 +1,11 @@
 from flask import Flask, render_template, request, url_for, redirect, flash
-from flask_login import UserMixin, login_user, current_user, logout_user, login_required, LoginManager
+from flask_login import login_user, current_user, logout_user, login_required, LoginManager #UserMixin
+#from flask_login import *
+from flask_user import roles_required, UserMixin
 
-
+#from warships_blog import *
 from warships_blog import app, db, bcrypt
-from warships_blog.classes import Ship, Tier, Type, User
+from warships_blog.classes import Ship, Tier, Type, User, Role, UserRoles
 from warships_blog.forms import RegistrationForm, LoginForm
 
 
@@ -13,11 +15,13 @@ from warships_blog.forms import RegistrationForm, LoginForm
 
 @app.route('/')
 @login_required
+@roles_required('admin')
 def index():      
     if current_user.is_authenticated:
         ships = Ship.query.all()
+        #tiers = Tier.query.all()
+        #return render_template('tiers.html', ships = ships, tiers = tiers)
         return render_template('index.html', ships = ships)
-    #return render_template('index.html', ships = ships)
 
 @app.route("/login/", methods=['GET', 'POST'])
 def login():
@@ -30,7 +34,7 @@ def login():
             login_user(user)
             #next_page = request.args.get('next')
             #return redirect(next_page) if next_page else redirect(url_for('index'))
-            return redirect(url_for('index'))
+            return redirect(url_for('add_tiers'))
             
             print(form.errors)
             
@@ -43,8 +47,44 @@ def login():
 
 @app.route("/account/")
 @login_required
+
 def account():
     return render_template('account.html')
+
+@app.route("/account_admin/")
+@login_required
+@roles_required('admin')
+def account_admin():
+    user = User.query.all()
+    userRoles = UserRoles.query.all()
+    return render_template('account_admin.html', user=user, userRoles=userRoles)
+
+    
+
+@app.route('/new_admin/<id>')
+@login_required
+def new_admin(id):
+    
+    if (UserRoles.query.filter_by(user_id=(id)).first()):        
+        admin = UserRoles.query.filter_by(user_id=(id)).first()
+        admin.role_id = 1
+    else:        
+        admin = UserRoles(user_id=(id), role_id = 1)
+        db.session.add(admin)
+    
+    db.session.commit()
+    return redirect(url_for('account_admin'))
+
+
+
+@app.route('/new_pueblo/<id>')
+@login_required
+def new_pueblo(id):
+    pueblo = UserRoles.query.filter_by(user_id=(id)).first()    
+    pueblo.role_id = 2
+    db.session.commit()
+    return redirect(url_for('account'))
+
 
 @app.route("/logout/")
 def logout():
@@ -62,7 +102,11 @@ def register():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
         #print(hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8'))
         user = User(username=form.username.data, email=form.email.data, password=hashed_password)
+        
         db.session.add(user)
+        
+        #rol = UserRoles(user_id=(user.id), role_id = 2) #asignamos el rol de pueblo
+        #db.session.add(rol)
         db.session.commit()
         
         #flash('Tu cuenta ha sido creada!', 'success')
@@ -83,6 +127,7 @@ def delete_user(id):
 
 @app.route('/add_ship/', methods=['POST'])
 @login_required
+#@roles_required('admin')
 def add_ship():
     ship = Ship(nombre=request.form['nombre'],type_class=request.form['type_class'], tier_number=request.form['tier_number'], origin=request.form['origin'], max_velocity=request.form['max_velocity'], active=False)
 #--------la variable "ship" es una instancia de la clase, un OBJETO
@@ -95,6 +140,7 @@ def add_ship():
 
 @app.route('/delete_ship/<id>')
 @login_required
+@roles_required('admin')
 def delete_ship(id):
     Ship.query.filter_by(id=int(id)).delete()
     db.session.commit()
@@ -111,6 +157,7 @@ def add_tiers():
 # Al darle al boton invertimos el
 @app.route('/active_ship/<id>')
 @login_required
+@roles_required('admin')
 def active_ship(id):
     ship = Ship.query.filter_by(id=int(id)).first()
     ship.active = not(ship.active)
@@ -121,6 +168,7 @@ def active_ship(id):
 
 @app.route('/add_types/', methods=['GET','POST'])
 @login_required
+@roles_required('admin')
 def create1_types():
     if request.method == 'GET':
         types = Type.query.all()
@@ -141,6 +189,7 @@ def add_types():
 
 @app.route('/edit_types/<type_class>', methods = ['GET','POST'])
 @login_required
+@roles_required('admin')
 def edit_type(type_class):
       
     if request.method == 'GET':
@@ -161,6 +210,7 @@ def edit_type(type_class):
 
 @app.route('/delete_type/<type_class>')
 @login_required
+@roles_required('admin')
 def delete_type(type_class):
     Type.query.filter_by(type_class=(type_class)).delete()
     db.session.commit()
@@ -170,6 +220,7 @@ def delete_type(type_class):
 
 @app.route('/edit_ship/<id>', methods = ['GET','POST'])
 @login_required
+@roles_required('admin')
 def edit_ship(id):
     #ships = Ship.query.all()    
     if request.method == 'GET':
